@@ -24,7 +24,7 @@ const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "foodorderingwesitedb",
+  database: "f&f",
 });
 connection.connect();
 
