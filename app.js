@@ -6,6 +6,7 @@ const ejs = require("ejs");
 const fileUpload = require("express-fileupload");
 const { v4: uuidv4 } = require("uuid");
 const mysql = require("mysql");
+require('dotenv').config()
 
 // Initialize Express App
 const app = express();
@@ -63,7 +64,7 @@ app.get("/logout", logout);
 
 // Index Page
 function renderIndexPage(req, res) {
-  res.render("index");
+  res.render("index", { cookies: req.cookies });
 }
 
 // User Sign-up
@@ -104,6 +105,7 @@ function signInUser(req, res) {
         const { user_id, user_name } = results[0];
         res.cookie("cookuid", user_id);
         res.cookie("cookuname", user_name);
+        res.cookie("cookemail", email);
         res.redirect("/homepage");
       }
     }
@@ -188,7 +190,7 @@ function getItemDetails(citems, size) {
 }
 
 // Checkout
-function checkout(req, res) {
+async function checkout(req, res) {
   const userId = req.cookies.cookuid;
   const userName = req.cookies.cookuname;
   connection.query(
